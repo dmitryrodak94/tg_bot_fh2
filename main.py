@@ -676,7 +676,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🆓 <b>Free Consultation Request</b>\n\n"
             "Let's get you connected with our expert team!\n\n"
             "👤 Please enter your <b>full name</b>:\n"
-            "<i>(minimum 10 characters, e.g. «John Smith»)</i>",
+            "<i>(minimum 3 characters)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
