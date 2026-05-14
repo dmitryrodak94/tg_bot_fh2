@@ -69,10 +69,10 @@ def validate_name(text: str) -> str | None:
     text = text.strip()
     if len(text) < 2:
         return "❗ Name is too short. Please enter at least 2 characters."
-    if len(text) < 10:
-        return f"❗ Name must be at least 10 characters long. You entered {len(text)}."
-    if len(text) > 100:
-        return "❗ Name is too long (max 100 characters)."
+    if len(text) < 3:
+        return f"❗ Name must be at least 3 characters long. You entered {len(text)}."
+    if len(text) > 10:
+        return "❗ Name is too long (max 10 characters)."
     return None
 
 def validate_phone(text: str) -> str | None:
