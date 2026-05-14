@@ -662,7 +662,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(
             f"📞 <b>Contact Our Team</b>\n\n"
             f"💬 Manager: {MANAGER_USERNAME}\n"
-            "🕐 Response time: within 1 business day\n\n"
             "Or submit a request and we'll call you back! 👇",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("📝 Submit a Request", callback_data="free_consult")],
