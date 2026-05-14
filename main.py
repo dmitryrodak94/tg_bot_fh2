@@ -6,6 +6,7 @@ Run: BOT_TOKEN= python fintecharbor_bot.py
 
 import logging
 import os
+import re
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -33,6 +34,52 @@ MANAGER_CHAT_ID  = os.getenv("MANAGER_CHAT_ID", "YOUR_BOT_TOKEN_HERE")          
 WAITING_LEAD_NAME  = 1
 WAITING_LEAD_PHONE = 2
 WAITING_LEAD_MSG   = 3
+
+# ─── VALIDATION ──────────────────────────────────────────────────────────────
+
+# Accepts: +1234567890, 1234567890, +1 (234) 567-89-00, etc.
+PHONE_RE = re.compile(
+    r"^\+?[\d\s\-\(\)]{7,20}$"
+)
+
+def validate_name(text: str) -> str | None:
+    """Return error message or None if valid."""
+    text = text.strip()
+    if len(text) < 2:
+        return "❗ Name is too short. Please enter at least 2 characters."
+    if len(text) < 10:
+        return f"❗ Name must be at least 10 characters long. You entered {len(text)}."
+    if len(text) > 100:
+        return "❗ Name is too long (max 100 characters)."
+    return None
+
+def validate_phone(text: str) -> str | None:
+    """Return error message or None if valid."""
+    text = text.strip()
+    # Allow Telegram username as alternative
+    if text.startswith("@") and len(text) >= 2:
+        return None
+    # Strip all non-digit chars to count actual digits
+    digits = re.sub(r"\D", "", text)
+    if len(digits) < 7:
+        return "❗ Phone number is too short. Please enter a valid number (e.g. +1 234 567 8900)."
+    if len(digits) > 15:
+        return "❗ Phone number is too long. Please check and re-enter."
+    if not PHONE_RE.match(text):
+        return (
+            "❗ Invalid format. Please enter a valid phone number (e.g. +1 234 567 8900) "
+            "or your Telegram username (e.g. @username)."
+        )
+    return None
+
+def validate_message(text: str) -> str | None:
+    """Return error message or None if valid."""
+    text = text.strip()
+    if len(text) < 10:
+        return f"❗ Request is too short. Please describe your needs in at least 10 characters (you entered {len(text)})."
+    if len(text) > 2000:
+        return "❗ Message is too long (max 2000 characters). Please shorten it."
+    return None
 
 # ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -360,10 +407,8 @@ OTHER_SERVICES = [
             "We offer a wide range of additional services for financial and gaming businesses:\n\n"
             "• 📝 AML/KYC Policy Development\n"
             "• 🔍 Compliance Audits\n"
-            "• 💹 MT4/MT5 White Label Setup\n"
             "• 🌐 Payment Processing Solutions\n"
             "• 📊 Risk Management Frameworks\n"
-            "• 🤝 Nominee Director / Shareholder Services\n"
             "• 📄 Drafting contracts, terms, policies & legal opinions\n\n"
             "Tell us what you need and we'll find the right solution!"
         ),
@@ -403,6 +448,7 @@ def category_keyboard(cat_key: str):
     buttons = []
     for key, label in cat["items"]:
         buttons.append([InlineKeyboardButton(label, callback_data=f"lic_{key}")])
+    buttons.append([InlineKeyboardButton("🌐 Interested in another jurisdiction? Let's discuss.", callback_data="contact")])
     buttons.append([InlineKeyboardButton("🏠 Main Menu", callback_data="main_menu")])
     return InlineKeyboardMarkup(buttons)
 
@@ -526,8 +572,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # ── Individual Other Service item ──
     elif data.startswith("os_"):
-        # callback_data is like "os_company", "os_bank", etc.
-        # Our keys in OTHER_SERVICES_TEXTS are "os_company", "os_bank", etc.
         full_key = data  # e.g. "os_company"
         text = OTHER_SERVICES_TEXTS.get(full_key)
         if text:
@@ -566,7 +610,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(
             "🆓 <b>Free Consultation Request</b>\n\n"
             "Let's get you connected with our expert team!\n\n"
-            "👤 Please enter your <b>name</b>:",
+            "👤 Please enter your <b>full name</b>:\n"
+            "<i>(minimum 10 characters, e.g. «John Smith»)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
@@ -585,11 +630,23 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ─── CONVERSATION: Lead Capture ──────────────────────────────────────────────
 
 async def lead_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["lead_name"] = update.message.text.strip()
+    text = update.message.text.strip()
+    error = validate_name(text)
+    if error:
+        await update.message.reply_text(
+            f"{error}\n\n"
+            "👤 Please re-enter your <b>full name</b>:\n"
+            "<i>(minimum 10 characters, e.g. «John Smith»)</i>",
+            reply_markup=lead_cancel_keyboard(),
+            parse_mode="HTML",
+        )
+        return WAITING_LEAD_NAME  # stay in same state
+
+    context.user_data["lead_name"] = text
     await update.message.reply_text(
-        f"✅ Nice to meet you, <b>{context.user_data['lead_name']}</b>!\n\n"
-        "📱 Now please enter your <b>phone number or Telegram username</b> "
-        "so we can reach you:",
+        f"✅ Nice to meet you, <b>{text}</b>!\n\n"
+        "📱 Now please enter your <b>phone number</b> or <b>Telegram username</b>:\n"
+        "<i>(e.g. +1 234 567 8900 or @username)</i>",
         reply_markup=lead_cancel_keyboard(),
         parse_mode="HTML",
     )
@@ -597,10 +654,22 @@ async def lead_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def lead_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["lead_phone"] = update.message.text.strip()
+    text = update.message.text.strip()
+    error = validate_phone(text)
+    if error:
+        await update.message.reply_text(
+            f"{error}\n\n"
+            "📱 Please re-enter your <b>phone number</b> or <b>Telegram username</b>:\n"
+            "<i>(e.g. +1 234 567 8900 or @username)</i>",
+            reply_markup=lead_cancel_keyboard(),
+            parse_mode="HTML",
+        )
+        return WAITING_LEAD_PHONE  # stay in same state
+
+    context.user_data["lead_phone"] = text
     await update.message.reply_text(
-        "📋 Almost done! Please briefly describe <b>what you need</b> "
-        "(e.g. 'Crypto license in EU', 'Gaming license for online casino', etc.):",
+        "📋 Almost done! Please briefly describe <b>what you need</b>:\n"
+        "<i>(minimum 10 characters, e.g. «Crypto license in EU for my exchange»)</i>",
         reply_markup=lead_cancel_keyboard(),
         parse_mode="HTML",
     )
@@ -608,7 +677,19 @@ async def lead_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["lead_msg"] = update.message.text.strip()
+    text = update.message.text.strip()
+    error = validate_message(text)
+    if error:
+        await update.message.reply_text(
+            f"{error}\n\n"
+            "📋 Please describe <b>what you need</b> in more detail:\n"
+            "<i>(minimum 10 characters)</i>",
+            reply_markup=lead_cancel_keyboard(),
+            parse_mode="HTML",
+        )
+        return WAITING_LEAD_MSG  # stay in same state
+
+    context.user_data["lead_msg"] = text
 
     user = update.effective_user
     name  = context.user_data.get("lead_name", "—")
