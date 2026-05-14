@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 # ─── Replace with your token and manager username ───────────────────────────
 BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
-MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "YOUR_BOT_TOKEN_HERE")         # shown in CTAs
-MANAGER_CHAT_ID  = os.getenv("MANAGER_CHAT_ID", "YOUR_BOT_TOKEN_HERE")                  # int chat_id to forward leads
+MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "YOUR_BOT_TOKEN_HERE")
+MANAGER_CHAT_ID  = os.getenv("MANAGER_CHAT_ID", "YOUR_BOT_TOKEN_HERE")
 # ────────────────────────────────────────────────────────────────────────────
 
 # ConversationHandler states
@@ -37,13 +37,35 @@ WAITING_LEAD_MSG   = 3
 
 # ─── VALIDATION ──────────────────────────────────────────────────────────────
 
-# Accepts: +1234567890, 1234567890, +1 (234) 567-89-00, etc.
-PHONE_RE = re.compile(
-    r"^\+?[\d\s\-\(\)]{7,20}$"
-)
+PHONE_RE = re.compile(r"^\+?[\d\s\-\(\)]{7,20}$")
+
+# Blocks numbers with 6+ identical digits in a row (e.g. 777777, 111111)
+REPEAT_RE = re.compile(r"(\d)\1{5,}")
+
+# Known valid country code prefixes (1–3 digits)
+VALID_COUNTRY_PREFIXES = {
+    "1", "7",
+    "20","27","30","31","32","33","34","36","39","40","41","43","44","45","46","47","48","49",
+    "51","52","53","54","55","56","57","58","60","61","62","63","64","65","66",
+    "81","82","84","86","90","91","92","93","94","95","98",
+    "212","213","216","218","220","221","222","223","224","225","226","227","228","229",
+    "230","231","232","233","234","235","236","237","238","239","240","241","242","243",
+    "244","245","246","247","248","249","250","251","252","253","254","255","256","257",
+    "258","260","261","262","263","264","265","266","267","268","269",
+    "290","291","297","298","299",
+    "350","351","352","353","354","355","356","357","358","359",
+    "370","371","372","373","374","375","376","377","378","380","381","382","385","386",
+    "387","389","420","421","423",
+    "500","501","502","503","504","505","506","507","508","509",
+    "590","591","592","593","594","595","596","597","598","599",
+    "670","672","673","674","675","676","677","678","679","680","681","682","683","685",
+    "686","687","688","689","690","691","692",
+    "850","852","853","855","856","880","886",
+    "960","961","962","963","964","965","966","967","968","970","971","972","973","974",
+    "975","976","977","992","993","994","995","996","998",
+}
 
 def validate_name(text: str) -> str | None:
-    """Return error message or None if valid."""
     text = text.strip()
     if len(text) < 2:
         return "❗ Name is too short. Please enter at least 2 characters."
@@ -54,26 +76,58 @@ def validate_name(text: str) -> str | None:
     return None
 
 def validate_phone(text: str) -> str | None:
-    """Return error message or None if valid."""
     text = text.strip()
-    # Allow Telegram username as alternative
-    if text.startswith("@") and len(text) >= 2:
+
+    # Allow Telegram username as alternative contact
+    if text.startswith("@"):
+        if len(text) < 5:
+            return "❗ Telegram username is too short (e.g. @username)."
+        if not re.match(r"^@[a-zA-Z0-9_]{4,32}$", text):
+            return "❗ Invalid Telegram username. Use letters, digits and underscores (e.g. @username)."
         return None
-    # Strip all non-digit chars to count actual digits
+
     digits = re.sub(r"\D", "", text)
+
+    # Length check
     if len(digits) < 7:
-        return "❗ Phone number is too short. Please enter a valid number (e.g. +1 234 567 8900)."
+        return "❗ Phone number is too short. Please enter a valid number (e.g. +44 20 7946 0958)."
     if len(digits) > 15:
-        return "❗ Phone number is too long. Please check and re-enter."
+        return "❗ Phone number is too long (max 15 digits). Please check and re-enter."
+
+    # Block repeated digits: 7777777, 1111111, etc.
+    if REPEAT_RE.search(digits):
+        return "❗ This doesn't look like a real phone number. Please enter your actual number."
+
+    # Block sequential runs: 1234567, 9876543, etc.
+    seq_fwd = "01234567890123456"
+    seq_rev = "98765432109876543"
+    if any(seq_fwd[i:i+7] in digits for i in range(len(seq_fwd) - 6)):
+        return "❗ This doesn't look like a real phone number. Please enter your actual number."
+    if any(seq_rev[i:i+7] in digits for i in range(len(seq_rev) - 6)):
+        return "❗ This doesn't look like a real phone number. Please enter your actual number."
+
+    # Must use at least 3 different digits
+    if len(set(digits)) < 3:
+        return "❗ This doesn't look like a real phone number. Please enter your actual number."
+
+    # Format check: only allowed characters
     if not PHONE_RE.match(text):
         return (
-            "❗ Invalid format. Please enter a valid phone number (e.g. +1 234 567 8900) "
-            "or your Telegram username (e.g. @username)."
+            "❗ Invalid format. Use digits, spaces, dashes or parentheses "
+            "(e.g. +44 20 7946 0958 or @username)."
         )
+
+    # Country code check
+    normalized = digits[2:] if digits.startswith("00") else digits
+    if not any(normalized[:n] in VALID_COUNTRY_PREFIXES for n in (1, 2, 3)):
+        return (
+            "❗ Unrecognized country code. Please include your country code "
+            "(e.g. +1 for USA, +44 for UK, +380 for Ukraine)."
+        )
+
     return None
 
 def validate_message(text: str) -> str | None:
-    """Return error message or None if valid."""
     text = text.strip()
     if len(text) < 10:
         return f"❗ Request is too short. Please describe your needs in at least 10 characters (you entered {len(text)})."
@@ -278,6 +332,25 @@ LICENSES = {
             "✅ The go-to license for new brokers — affordable, fast, globally accepted."
         ),
     },
+    "forex_labuan": {
+        "title": "🇲🇾 Forex License in Labuan, Malaysia (Money Broking)",
+        "emoji": "🇲🇾",
+        "description": (
+            "Labuan FSA offers a Money Broking License in a well-regulated "
+            "Asian financial hub with strong international credibility and "
+            "access to Asian banking infrastructure.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Regulated by Labuan FSA — FATF-compliant, IOSCO member\n"
+            "• Covers Forex, CFDs, money broking & financial advisory\n"
+            "• Low corporate tax: 3% on net profit (or flat RM 20,000/year)\n"
+            "• Access to Malaysia's extensive double tax treaty network (70+ countries)\n"
+            "• Strong banking access — local and international banks\n"
+            "• 100% foreign ownership permitted\n\n"
+            "⏱ <b>Timeline:</b> 3–6 months\n"
+            "✅ Ideal for brokers targeting Asian markets who need a reputable, "
+            "cost-efficient regulated entity."
+        ),
+    },
 }
 
 # ─── MENUS ───────────────────────────────────────────────────────────────────
@@ -338,42 +411,46 @@ CATEGORIES = {
         "items": [
             ("forex_mauritius",  "🇲🇺 Forex License in Mauritius"),
             ("forex_seychelles", "🏝 Forex License in Seychelles"),
+            ("forex_labuan",     "🇲🇾 Forex License in Labuan (Malaysia)"),
         ],
     },
 }
 
-# ─── OTHER SERVICES items (shown when "Other Services" button is pressed) ────
-# Each item: ("callback_key", "Button Label", "Full text shown to user")
+# ─── OTHER SERVICES ──────────────────────────────────────────────────────────
+
 OTHER_SERVICES = [
     (
         "os_company",
         "🏢 Company Registration",
         (
             "🏢 <b>Company Registration</b>\n\n"
-            "We handle the full incorporation process — from jurisdiction selection and document "
-            "preparation to nominee services and registered office setup.\n\n"
-            "🌍 Popular jurisdictions: UK, USA, EU, UAE, Singapore, Hong Kong, Cyprus, "
-            "BVI, Cayman, Seychelles and other offshore jurisdictions.\n"
-            "⏱ Timeline: 1–4 weeks depending on jurisdiction"
+            "We handle the full incorporation process — from jurisdiction selection "
+            "and document preparation to nominee services and registered office setup.\n\n"
+            "🌍 <b>Available jurisdictions:</b>\n"
+            "• UK, USA, EU countries\n"
+            "• UAE, Singapore, Hong Kong, Cyprus\n"
+            "• Offshore: BVI, Cayman, Seychelles and more\n\n"
+            "📩 Contact us to find the right structure for your business."
         ),
     ),
     (
         "os_bank",
-        "🏦 Business Bank Account",
+        "🏦 Bank Account Opening",
         (
-            "🏦 <b>Business Bank Account Opening</b>\n\n"
-            "Opening a business bank account is often the hardest part — but we have "
-            "established relationships with banks and EMIs globally.\n\n"
-            "💳 <b>We work with:</b>\n"
-            "• Traditional banks in EU, UK, Asia, Caribbean\n"
-            "• EMI/IBAN providers (fast & remote-friendly)\n"
-            "• Crypto-friendly banks for VASPs\n\n"
-            "⏱ Timeline: 2–8 weeks"
+            "🏦 <b>Bank Account Opening</b>\n\n"
+            "We open corporate, crypto-friendly, and EMI accounts for both "
+            "traditional and high-risk businesses.\n\n"
+            "💳 <b>Account types:</b>\n"
+            "• Corporate bank accounts (EU, UK, Asia, Caribbean)\n"
+            "• EMI / IBAN accounts — fast & remote-friendly\n"
+            "• Crypto-friendly accounts for VASPs & exchanges\n"
+            "• High-risk business accounts (gaming, forex, crypto)\n\n"
+            "📩 Tell us about your business and we'll match you with the right bank."
         ),
     ),
     (
         "os_trademark",
-        "™️ Trademark Registration",
+        "™️ Trademark & IP Protection",
         (
             "™️ <b>Trademark Registration &amp; IP Protection</b>\n\n"
             "Protect your brand in key markets before competitors do.\n\n"
@@ -382,40 +459,40 @@ OTHER_SERVICES = [
             "• USA (USPTO)\n"
             "• UK (UKIPO)\n"
             "• International (WIPO Madrid Protocol — 130+ countries)\n\n"
-            "⏱ Timeline: 3–18 months (varies by jurisdiction)"
+            "📩 Contact us to start protecting your brand today."
         ),
     ),
     (
         "os_lawyer",
         "⚖️ Lawyer Consultation",
         (
-            "⚖️ <b>Consultation with a Lawyer</b>\n\n"
-            "Get expert legal assistance tailored to your situation.\n\n"
+            "⚖️ <b>Lawyer Consultation</b>\n\n"
+            "Get expert legal assistance tailored to your inquiry.\n\n"
             "📋 <b>We cover:</b>\n"
             "• License selection & jurisdiction strategy\n"
             "• Regulatory compliance & AML/KYC policies\n"
-            "• Corporate structuring\n"
-            "• Contract review & due diligence\n\n"
-            "⏱ Session: 1 hour"
+            "• Corporate structuring & due diligence\n"
+            "• Contract review & legal risk assessment\n\n"
+            "📩 Submit a request and our lawyer will get back to you shortly."
         ),
     ),
     (
         "os_other",
-        "📋 Other / Custom Services",
+        "📋 Other Services",
         (
             "📋 <b>Other Services</b>\n\n"
-            "We offer a wide range of additional services for financial and gaming businesses:\n\n"
-            "• 📝 AML/KYC Policy Development\n"
-            "• 🔍 Compliance Audits\n"
-            "• 🌐 Payment Processing Solutions\n"
-            "• 📊 Risk Management Frameworks\n"
-            "• 📄 Drafting contracts, terms, policies & legal opinions\n\n"
-            "Tell us what you need and we'll find the right solution!"
+            "We provide a full range of legal and compliance documents for "
+            "crypto, fintech and gaming projects:\n\n"
+            "• 📄 Drafting contracts & commercial agreements\n"
+            "• 📝 Terms & Conditions, Privacy Policies\n"
+            "• 🔐 AML/KYC frameworks & compliance programs\n"
+            "• ⚖️ Legal opinions for crypto, fintech & gaming\n"
+            "• 🔍 Regulatory gap analysis & compliance audits\n\n"
+            "📩 Tell us what you need and we'll prepare the right documents."
         ),
     ),
 ]
 
-# Build a quick lookup dict: callback_key → full text
 OTHER_SERVICES_TEXTS = {key: text for key, _, text in OTHER_SERVICES}
 
 # ─── KEYBOARDS ───────────────────────────────────────────────────────────────
@@ -434,7 +511,6 @@ def main_menu_keyboard():
 
 
 def other_services_keyboard(active_key: str = ""):
-    """Keyboard listing all Other Services items."""
     buttons = []
     for key, label, _ in OTHER_SERVICES:
         marker = "▶️ " if key == active_key else ""
@@ -479,7 +555,6 @@ def lead_cancel_keyboard():
 # ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 def find_cat_for_license(lic_key: str) -> str:
-    """Return the category key that contains this license."""
     for cat_key, cat in CATEGORIES.items():
         all_keys = [k for k, _ in cat["items"]]
         if lic_key in all_keys:
@@ -529,17 +604,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = query.data
 
-    # ── Main menu ──
     if data == "main_menu":
         await query.edit_message_text(
             MAIN_MENU_TEXT, reply_markup=main_menu_keyboard(), parse_mode="HTML"
         )
 
-    # ── No-op (section divider) ──
     elif data == "noop":
         return
 
-    # ── Category ──
     elif data.startswith("cat_"):
         cat_key = data[4:]
         cat = CATEGORIES[cat_key]
@@ -547,22 +619,18 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             cat["intro"], reply_markup=category_keyboard(cat_key), parse_mode="HTML"
         )
 
-    # ── Specific license ──
     elif data.startswith("lic_"):
         lic_key = data[4:]
         cat_key = find_cat_for_license(lic_key)
-
         if lic_key in LICENSES:
             info = LICENSES[lic_key]
             text = f"{info['title']}\n\n{info['description']}"
         else:
             text = "ℹ️ Details coming soon. Please contact our team."
-
         await query.edit_message_text(
             text, reply_markup=license_keyboard(cat_key, lic_key), parse_mode="HTML"
         )
 
-    # ── Other Services list (main menu button) ──
     elif data == "other_list":
         await query.edit_message_text(
             "📋 <b>Other Services</b>\n\nChoose a service below:",
@@ -570,9 +638,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML",
         )
 
-    # ── Individual Other Service item ──
     elif data.startswith("os_"):
-        full_key = data  # e.g. "os_company"
+        full_key = data
         text = OTHER_SERVICES_TEXTS.get(full_key)
         if text:
             kb = InlineKeyboardMarkup([
@@ -591,7 +658,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 parse_mode="HTML",
             )
 
-    # ── Contact ──
     elif data == "contact":
         await query.edit_message_text(
             f"📞 <b>Contact Our Team</b>\n\n"
@@ -605,7 +671,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML",
         )
 
-    # ── Free Consult → start ConversationHandler ──
     elif data == "free_consult":
         await query.edit_message_text(
             "🆓 <b>Free Consultation Request</b>\n\n"
@@ -617,7 +682,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return WAITING_LEAD_NAME
 
-    # ── Cancel lead form ──
     elif data == "cancel_lead":
         await query.edit_message_text(
             "❌ Request cancelled.\n\n" + MAIN_MENU_TEXT,
@@ -640,7 +704,7 @@ async def lead_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
-        return WAITING_LEAD_NAME  # stay in same state
+        return WAITING_LEAD_NAME
 
     context.user_data["lead_name"] = text
     await update.message.reply_text(
@@ -664,7 +728,7 @@ async def lead_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
-        return WAITING_LEAD_PHONE  # stay in same state
+        return WAITING_LEAD_PHONE
 
     context.user_data["lead_phone"] = text
     await update.message.reply_text(
@@ -687,7 +751,7 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
-        return WAITING_LEAD_MSG  # stay in same state
+        return WAITING_LEAD_MSG
 
     context.user_data["lead_msg"] = text
 
