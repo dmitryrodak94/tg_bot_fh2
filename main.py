@@ -71,8 +71,8 @@ def validate_name(text: str) -> str | None:
         return "❗ Name is too short. Please enter at least 2 characters."
     if len(text) < 3:
         return f"❗ Name must be at least 3 characters long. You entered {len(text)}."
-    if len(text) > 10:
-        return "❗ Name is too long (max 10 characters)."
+    if len(text) > 15:
+        return "❗ Name is too long (max 15 characters)."
     return None
 
 def validate_phone(text: str) -> str | None:
@@ -129,8 +129,8 @@ def validate_phone(text: str) -> str | None:
 
 def validate_message(text: str) -> str | None:
     text = text.strip()
-    if len(text) < 10:
-        return f"❗ Request is too short. Please describe your needs in at least 10 characters (you entered {len(text)})."
+    if len(text) < 3:
+        return f"❗ Request is too short. Please describe your needs in at least 3 characters (you entered {len(text)})."
     if len(text) > 2000:
         return "❗ Message is too long (max 2000 characters). Please shorten it."
     return None
@@ -700,7 +700,7 @@ async def lead_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{error}\n\n"
             "👤 Please re-enter your <b>full name</b>:\n"
-            "<i>(minimum 10 characters, e.g. «John Smith»)</i>",
+            "<i>(minimum 3 characters)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
@@ -733,7 +733,7 @@ async def lead_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["lead_phone"] = text
     await update.message.reply_text(
         "📋 Almost done! Please briefly describe <b>what you need</b>:\n"
-        "<i>(minimum 10 characters, e.g. «Crypto license in EU for my exchange»)</i>",
+        "<i>(minimum 5 characters, e.g. «Crypto license in EU for my exchange»)</i>",
         reply_markup=lead_cancel_keyboard(),
         parse_mode="HTML",
     )
@@ -747,7 +747,7 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{error}\n\n"
             "📋 Please describe <b>what you need</b> in more detail:\n"
-            "<i>(minimum 10 characters)</i>",
+            "<i>(minimum 5 characters)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
