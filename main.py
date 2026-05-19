@@ -1,7 +1,7 @@
 """
 Telegram Consultation Bot — Crypto / Gaming / Forex Licenses
 Requirements: pip install python-telegram-bot==20.*
-Run: BOT_TOKEN= python fintecharbor_bot.py
+Run: BOT_TOKEN=xxx MANAGER_CHAT_ID=111,222 MANAGER_USERNAME=@you python fintecharbor_bot.py
 """
 
 import logging
@@ -24,11 +24,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ─── Replace with your token and manager username ───────────────────────────
-BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
-MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "YOUR_BOT_TOKEN_HERE")
-MANAGER_CHAT_ID  = os.getenv("MANAGER_CHAT_ID", "YOUR_BOT_TOKEN_HERE")
-# ────────────────────────────────────────────────────────────────────────────
+# ─── Config ──────────────────────────────────────────────────────────────────
+BOT_TOKEN        = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
+MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "@your_username")
+
+# One or two manager IDs separated by comma: "123456789" or "123456789,987654321"
+_raw = os.getenv("MANAGER_CHAT_ID", "")
+MANAGER_CHAT_ID: list[int] = [
+    int(x.strip()) for x in _raw.split(",") if x.strip().lstrip("-").isdigit()
+]
+# ─────────────────────────────────────────────────────────────────────────────
 
 # ConversationHandler states
 WAITING_LEAD_NAME  = 1
@@ -38,11 +43,8 @@ WAITING_LEAD_MSG   = 3
 # ─── VALIDATION ──────────────────────────────────────────────────────────────
 
 PHONE_RE = re.compile(r"^\+?[\d\s\-\(\)]{7,20}$")
-
-# Blocks numbers with 6+ identical digits in a row (e.g. 777777, 111111)
 REPEAT_RE = re.compile(r"(\d)\1{5,}")
 
-# Known valid country code prefixes (1–3 digits)
 VALID_COUNTRY_PREFIXES = {
     "1", "7",
     "20","27","30","31","32","33","34","36","39","40","41","43","44","45","46","47","48","49",
@@ -75,54 +77,38 @@ def validate_name(text: str) -> str | None:
 
 def validate_phone(text: str) -> str | None:
     text = text.strip()
-
-    # Allow Telegram username as alternative contact
     if text.startswith("@"):
         if len(text) < 5:
             return "❗ Telegram username is too short (e.g. @username)."
         if not re.match(r"^@[a-zA-Z0-9_]{4,32}$", text):
             return "❗ Invalid Telegram username. Use letters, digits and underscores (e.g. @username)."
         return None
-
     digits = re.sub(r"\D", "", text)
-
-    # Length check
     if len(digits) < 7:
         return "❗ Phone number is too short. Please enter a valid number (e.g. +44 20 7946 0958)."
     if len(digits) > 15:
         return "❗ Phone number is too long (max 15 digits). Please check and re-enter."
-
-    # Block repeated digits: 7777777, 1111111, etc.
     if REPEAT_RE.search(digits):
         return "❗ This doesn't look like a real phone number. Please enter your actual number."
-
-    # Block sequential runs: 1234567, 9876543, etc.
     seq_fwd = "01234567890123456"
     seq_rev = "98765432109876543"
     if any(seq_fwd[i:i+7] in digits for i in range(len(seq_fwd) - 6)):
         return "❗ This doesn't look like a real phone number. Please enter your actual number."
     if any(seq_rev[i:i+7] in digits for i in range(len(seq_rev) - 6)):
         return "❗ This doesn't look like a real phone number. Please enter your actual number."
-
-    # Must use at least 3 different digits
     if len(set(digits)) < 3:
         return "❗ This doesn't look like a real phone number. Please enter your actual number."
-
-    # Format check: only allowed characters
     if not PHONE_RE.match(text):
         return (
             "❗ Invalid format. Use digits, spaces, dashes or parentheses "
             "(e.g. +44 20 7946 0958 or @username)."
         )
-
-    # Country code check
     normalized = digits[2:] if digits.startswith("00") else digits
     if not any(normalized[:n] in VALID_COUNTRY_PREFIXES for n in (1, 2, 3)):
         return (
             "❗ Unrecognized country code. Please include your country code "
             "(e.g. +1 for USA, +44 for UK, +380 for Ukraine)."
         )
-
     return None
 
 def validate_message(text: str) -> str | None:
@@ -136,7 +122,6 @@ def validate_message(text: str) -> str | None:
 # ─── DATA ────────────────────────────────────────────────────────────────────
 
 LICENSES = {
-    # ── CRYPTO ──────────────────────────────────────────────────────────────
     "crypto_mica": {
         "title": "🇪🇺 Crypto License in EU (CASP under MiCA)",
         "emoji": "🇪🇺",
@@ -229,7 +214,6 @@ LICENSES = {
             "needing a rapid, budget-friendly legal wrapper to launch globally."
         ),
     },
-    # ── GAMING ──────────────────────────────────────────────────────────────
     "gaming_anjouan": {
         "title": "🎰 Anjouan Gaming License",
         "emoji": "🎰",
@@ -318,7 +302,6 @@ LICENSES = {
             "✅ The industry standard for mid-size operators worldwide."
         ),
     },
-    # ── FOREX ───────────────────────────────────────────────────────────────
     "forex_mauritius": {
         "title": "🇲🇺 Forex License in Mauritius",
         "emoji": "🇲🇺",
@@ -771,11 +754,11 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     context.user_data["lead_msg"] = text
 
-    user = update.effective_user
-    name  = context.user_data.get("lead_name", "—")
-    phone = context.user_data.get("lead_phone", "—")
-    msg   = context.user_data.get("lead_msg", "—")
-    tg_link = f"@{user.username}" if user.username else f"tg://user?id={user.id}"
+    user     = update.effective_user
+    name     = context.user_data.get("lead_name", "—")
+    phone    = context.user_data.get("lead_phone", "—")
+    msg      = context.user_data.get("lead_msg", "—")
+    tg_link  = f"@{user.username}" if user.username else f"tg://user?id={user.id}"
 
     if MANAGER_CHAT_ID:
         lead_text = (
@@ -785,13 +768,11 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"📋 Request: {msg}\n"
             f"🔗 Telegram: {tg_link}"
         )
-        for manager in MANAGER_CHAT_ID:
+        for chat_id in MANAGER_CHAT_ID:
             try:
-                await update.get_bot().send_message(
-                    manager, lead_text, parse_mode="HTML"
-                )
+                await context.bot.send_message(chat_id, lead_text, parse_mode="HTML")
             except Exception as e:
-                logger.error(f"Failed to forward lead: {e}")
+                logger.error(f"Failed to send lead to {chat_id}: {e}")
 
     await update.message.reply_text(
         "🎉 <b>Request Submitted!</b>\n\n"
