@@ -786,10 +786,12 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"🔗 Telegram: {tg_link}"
         )
         for manager in MANAGER_CHAT_ID:
-
-            await update.get_bot().send_message(
+            try:
+                await update.get_bot().send_message(
                     manager, lead_text, parse_mode="HTML"
                 )
+            except Exception as e:
+                logger.error(f"Failed to forward lead: {e}")
 
     await update.message.reply_text(
         "🎉 <b>Request Submitted!</b>\n\n"
