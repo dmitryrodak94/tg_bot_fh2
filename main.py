@@ -69,10 +69,10 @@ def validate_name(text: str) -> str | None:
     text = text.strip()
     if len(text) < 2:
         return "❗ Name is too short. Please enter at least 2 characters."
-    if len(text) < 3:
-        return f"❗ Name must be at least 3 characters long. You entered {len(text)}."
-    if len(text) > 15:
-        return "❗ Name is too long (max 15 characters)."
+    if len(text) < 10:
+        return f"❗ Name must be at least 10 characters long. You entered {len(text)}."
+    if len(text) > 100:
+        return "❗ Name is too long (max 100 characters)."
     return None
 
 def validate_phone(text: str) -> str | None:
@@ -129,8 +129,8 @@ def validate_phone(text: str) -> str | None:
 
 def validate_message(text: str) -> str | None:
     text = text.strip()
-    if len(text) < 3:
-        return f"❗ Request is too short. Please describe your needs in at least 3 characters (you entered {len(text)})."
+    if len(text) < 10:
+        return f"❗ Request is too short. Please describe your needs in at least 10 characters (you entered {len(text)})."
     if len(text) > 2000:
         return "❗ Message is too long (max 2000 characters). Please shorten it."
     return None
@@ -212,6 +212,23 @@ LICENSES = {
             "• Covers exchanges, custodians & payment providers\n\n"
             "⏱ <b>Timeline:</b> 3–4 months\n"
             "✅ Excellent for innovative crypto businesses seeking a progressive jurisdiction."
+        ),
+    },
+    "crypto_alternative": {
+        "title": "🌐 Alternative Crypto Setup",
+        "emoji": "🌐",
+        "description": (
+            "This setup provides a fast, cost-effective, and highly flexible legal foundation "
+            "for your project, utilizing Legal Opinions instead of formal licensing to operate "
+            "compliantly in business-friendly jurisdictions.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• No formal VASP/CASP license required (Opinion-backed compliance)\n"
+            "• Low barrier to entry with minimal regulatory and reporting burdens\n"
+            "• Supported by professional Non-Security and Tokenomics Legal Opinions\n"
+            "• Tax-efficient corporate structures\n\n"
+            "⏱ <b>Timeline:</b> 3–4 weeks\n"
+            "✅ Ideal for: Web3 startups, DeFi protocols, DAOs, and utility token issuers "
+            "needing a rapid, budget-friendly legal wrapper to launch globally."
         ),
     },
     # ── GAMING ──────────────────────────────────────────────────────────────
@@ -380,6 +397,7 @@ CATEGORIES = {
             ("crypto_canada",     "🇨🇦 Canada (MSB)"),
             ("crypto_mauritius",  "🇲🇺 Mauritius (VASP)"),
             ("crypto_elsalvador", "🇸🇻 El Salvador (DASP)"),
+            ("crypto_alternative","🌐 Alternative Crypto Setup"),
         ],
     },
     "gaming": {
@@ -662,6 +680,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(
             f"📞 <b>Contact Our Team</b>\n\n"
             f"💬 Manager: {MANAGER_USERNAME}\n"
+            "🕐 Response time: within 1 business day\n\n"
             "Or submit a request and we'll call you back! 👇",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("📝 Submit a Request", callback_data="free_consult")],
@@ -675,7 +694,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🆓 <b>Free Consultation Request</b>\n\n"
             "Let's get you connected with our expert team!\n\n"
             "👤 Please enter your <b>full name</b>:\n"
-            "<i>(minimum 3 characters)</i>",
+            "<i>(minimum 10 characters, e.g. «John Smith»)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
@@ -699,7 +718,7 @@ async def lead_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{error}\n\n"
             "👤 Please re-enter your <b>full name</b>:\n"
-            "<i>(minimum 3 characters)</i>",
+            "<i>(minimum 10 characters, e.g. «John Smith»)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
@@ -732,7 +751,7 @@ async def lead_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["lead_phone"] = text
     await update.message.reply_text(
         "📋 Almost done! Please briefly describe <b>what you need</b>:\n"
-        "<i>(minimum 5 characters, e.g. «Crypto license in EU for my exchange»)</i>",
+        "<i>(minimum 10 characters, e.g. «Crypto license in EU for my exchange»)</i>",
         reply_markup=lead_cancel_keyboard(),
         parse_mode="HTML",
     )
@@ -746,7 +765,7 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{error}\n\n"
             "📋 Please describe <b>what you need</b> in more detail:\n"
-            "<i>(minimum 5 characters)</i>",
+            "<i>(minimum 10 characters)</i>",
             reply_markup=lead_cancel_keyboard(),
             parse_mode="HTML",
         )
@@ -768,12 +787,13 @@ async def lead_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"📋 Request: {msg}\n"
             f"🔗 Telegram: {tg_link}"
         )
-        try:
-            await update.get_bot().send_message(
-                MANAGER_CHAT_ID, lead_text, parse_mode="HTML"
-            )
-        except Exception as e:
-            logger.error(f"Failed to forward lead: {e}")
+        for manager in MANAGER_CHAT_ID:
+            try:
+                await update.get_bot().send_message(
+                    manager, lead_text, parse_mode="HTML"
+                )
+            except Exception as e:
+                logger.error(f"Failed to forward lead: {e}")
 
     await update.message.reply_text(
         "🎉 <b>Request Submitted!</b>\n\n"
