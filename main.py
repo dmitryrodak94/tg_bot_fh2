@@ -122,98 +122,101 @@ def validate_message(text: str) -> str | None:
 # ─── DATA ────────────────────────────────────────────────────────────────────
 
 LICENSES = {
-    "crypto_mica": {
-        "title": "🇪🇺 Crypto License in EU (CASP under MiCA)",
-        "emoji": "🇪🇺",
-        "description": (
-            "MiCA is the first EU-wide crypto regulation, "
-            "allowing your business to operate across all EU "
-            "member states with a single license.\n\n"
-            "📌 <b>Key facts:</b>\n"
-            "• Valid across all 27 EU member states\n"
-            "• Covers exchanges, custodians, issuers & advisors\n"
-            "• Fully enforced from December 2024\n"
-            "• Requires AML/KYC program, capital requirements & technical standards\n\n"
-            "⏱ <b>Timeline:</b> 4–6 months\n"
-            "✅ Best for companies targeting the European market with full regulatory compliance."
-        ),
-    },
-    "crypto_swiss": {
-        "title": "🇨🇭 Crypto License in Switzerland (CASP)",
-        "emoji": "🇨🇭",
-        "description": (
-            "License provides strong legal clarity for crypto, reliable banking access, "
-            "and high investor trust in a top-tier financial jurisdiction.\n\n"
-            "📌 <b>Key facts:</b>\n"
-            "• Mandatory SRO membership (e.g. VQF)\n"
-            "• Covers exchanges, wallets, DeFi & token issuers\n"
-            "• Switzerland is not an EU state — separate passport\n\n"
-            "⏱ <b>Timeline:</b> 5–6 months\n"
-            "✅ Ideal for companies wanting a premium European brand with Swiss credibility."
-        ),
-    },
-    "crypto_canada": {
-        "title": "🇨🇦 Crypto License in Canada (MSB)",
-        "emoji": "🇨🇦",
-        "description": (
-            "License provides strong regulatory credibility, "
-            "access to banking and payment systems, and enables crypto projects "
-            "to legally operate, process transactions, and build trusted global services.\n\n"
-            "📌 <b>Key facts:</b>\n"
-            "• Covers crypto exchanges & money transfer\n"
-            "• No minimum capital requirement\n"
-            "• Can be obtained 100% remotely\n\n"
-            "⏱ <b>Timeline:</b> 5–7 months\n"
-            "✅ Perfect for startups needing a regulated entity quickly and cost-effectively."
-        ),
-    },
-    "crypto_mauritius": {
-        "title": "🇲🇺 Crypto License in Mauritius (VASP)",
-        "emoji": "🇲🇺",
-        "description": (
-            "Fast licensing, low operational costs, flexible regulation, "
-            "and access to international markets.\n\n"
-            "📌 <b>Key facts:</b>\n"
-            "• Regulated by the FSC — FATF-compliant jurisdiction\n"
-            "• Covers exchanges, custodians, portfolio managers\n"
-            "• Tax-efficient jurisdiction (0–15% corporate tax)\n"
-            "• Growing fintech hub in Africa/Asia corridor\n\n"
-            "⏱ <b>Timeline:</b> 3–6 months\n"
-            "✅ Great for companies serving African and Asian markets."
-        ),
-    },
-    "crypto_elsalvador": {
-        "title": "🇸🇻 Crypto License in El Salvador (DASP)",
-        "emoji": "🇸🇻",
-        "description": (
-            "Legal recognition of crypto, fast setup, low taxes on crypto activities, "
-            "and a supportive regulatory environment.\n\n"
-            "📌 <b>Key facts:</b>\n"
-            "• Pioneer crypto-friendly jurisdiction\n"
-            "• Regulated by the Central Reserve Bank (BCR)\n"
-            "• Low tax environment, no capital gains tax on Bitcoin\n"
-            "• Covers exchanges, custodians & payment providers\n\n"
-            "⏱ <b>Timeline:</b> 3–4 months\n"
-            "✅ Excellent for innovative crypto businesses seeking a progressive jurisdiction."
-        ),
-    },
-    "crypto_alternative": {
-        "title": "🌐 Alternative Crypto Setup",
-        "emoji": "🌐",
-        "description": (
-            "This setup provides a fast, cost-effective, and highly flexible legal foundation "
-            "for your project, utilizing Legal Opinions instead of formal licensing to operate "
-            "compliantly in business-friendly jurisdictions.\n\n"
-            "📌 <b>Key facts:</b>\n"
-            "• No formal VASP/CASP license required (Opinion-backed compliance)\n"
-            "• Low barrier to entry with minimal regulatory and reporting burdens\n"
-            "• Supported by professional Non-Security and Tokenomics Legal Opinions\n"
-            "• Tax-efficient corporate structures\n\n"
-            "⏱ <b>Timeline:</b> 3–4 weeks\n"
-            "✅ Ideal for: Web3 startups, DeFi protocols, DAOs, and utility token issuers "
-            "needing a rapid, budget-friendly legal wrapper to launch globally."
-        ),
-    },
+    # ── CRYPTO (закомментировано — раскомментировать когда нужно) ──
+    # "crypto_mica": {
+    #     "title": "🇪🇺 Crypto License in EU (CASP under MiCA)",
+    #     "emoji": "🇪🇺",
+    #     "description": (
+    #         "MiCA is the first EU-wide crypto regulation, "
+    #         "allowing your business to operate across all EU "
+    #         "member states with a single license.\n\n"
+    #         "📌 <b>Key facts:</b>\n"
+    #         "• Valid across all 27 EU member states\n"
+    #         "• Covers exchanges, custodians, issuers & advisors\n"
+    #         "• Fully enforced from December 2024\n"
+    #         "• Requires AML/KYC program, capital requirements & technical standards\n\n"
+    #         "⏱ <b>Timeline:</b> 4–6 months\n"
+    #         "✅ Best for companies targeting the European market with full regulatory compliance."
+    #     ),
+    # },
+    # "crypto_swiss": {
+    #     "title": "🇨🇭 Crypto License in Switzerland (CASP)",
+    #     "emoji": "🇨🇭",
+    #     "description": (
+    #         "License provides strong legal clarity for crypto, reliable banking access, "
+    #         "and high investor trust in a top-tier financial jurisdiction.\n\n"
+    #         "📌 <b>Key facts:</b>\n"
+    #         "• Mandatory SRO membership (e.g. VQF)\n"
+    #         "• Covers exchanges, wallets, DeFi & token issuers\n"
+    #         "• Switzerland is not an EU state — separate passport\n\n"
+    #         "⏱ <b>Timeline:</b> 5–6 months\n"
+    #         "✅ Ideal for companies wanting a premium European brand with Swiss credibility."
+    #     ),
+    # },
+    # "crypto_canada": {
+    #     "title": "🇨🇦 Crypto License in Canada (MSB)",
+    #     "emoji": "🇨🇦",
+    #     "description": (
+    #         "License provides strong regulatory credibility, "
+    #         "access to banking and payment systems, and enables crypto projects "
+    #         "to legally operate, process transactions, and build trusted global services.\n\n"
+    #         "📌 <b>Key facts:</b>\n"
+    #         "• Covers crypto exchanges & money transfer\n"
+    #         "• No minimum capital requirement\n"
+    #         "• Can be obtained 100% remotely\n\n"
+    #         "⏱ <b>Timeline:</b> 5–7 months\n"
+    #         "✅ Perfect for startups needing a regulated entity quickly and cost-effectively."
+    #     ),
+    # },
+    # "crypto_mauritius": {
+    #     "title": "🇲🇺 Crypto License in Mauritius (VASP)",
+    #     "emoji": "🇲🇺",
+    #     "description": (
+    #         "Fast licensing, low operational costs, flexible regulation, "
+    #         "and access to international markets.\n\n"
+    #         "📌 <b>Key facts:</b>\n"
+    #         "• Regulated by the FSC — FATF-compliant jurisdiction\n"
+    #         "• Covers exchanges, custodians, portfolio managers\n"
+    #         "• Tax-efficient jurisdiction (0–15% corporate tax)\n"
+    #         "• Growing fintech hub in Africa/Asia corridor\n\n"
+    #         "⏱ <b>Timeline:</b> 3–6 months\n"
+    #         "✅ Great for companies serving African and Asian markets."
+    #     ),
+    # },
+    # "crypto_elsalvador": {
+    #     "title": "🇸🇻 Crypto License in El Salvador (DASP)",
+    #     "emoji": "🇸🇻",
+    #     "description": (
+    #         "Legal recognition of crypto, fast setup, low taxes on crypto activities, "
+    #         "and a supportive regulatory environment.\n\n"
+    #         "📌 <b>Key facts:</b>\n"
+    #         "• Pioneer crypto-friendly jurisdiction\n"
+    #         "• Regulated by the Central Reserve Bank (BCR)\n"
+    #         "• Low tax environment, no capital gains tax on Bitcoin\n"
+    #         "• Covers exchanges, custodians & payment providers\n\n"
+    #         "⏱ <b>Timeline:</b> 3–4 months\n"
+    #         "✅ Excellent for innovative crypto businesses seeking a progressive jurisdiction."
+    #     ),
+    # },
+    # "crypto_alternative": {
+    #     "title": "🌐 Alternative Crypto Setup",
+    #     "emoji": "🌐",
+    #     "description": (
+    #         "This setup provides a fast, cost-effective, and highly flexible legal foundation "
+    #         "for your project, utilizing Legal Opinions instead of formal licensing to operate "
+    #         "compliantly in business-friendly jurisdictions.\n\n"
+    #         "📌 <b>Key facts:</b>\n"
+    #         "• No formal VASP/CASP license required (Opinion-backed compliance)\n"
+    #         "• Low barrier to entry with minimal regulatory and reporting burdens\n"
+    #         "• Supported by professional Non-Security and Tokenomics Legal Opinions\n"
+    #         "• Tax-efficient corporate structures\n\n"
+    #         "⏱ <b>Timeline:</b> 3–4 weeks\n"
+    #         "✅ Ideal for: Web3 startups, DeFi protocols, DAOs, and utility token issuers "
+    #         "needing a rapid, budget-friendly legal wrapper to launch globally."
+    #     ),
+    # },
+    # ── /CRYPTO ──────────────────────────────────────────────────────────────
+
     "gaming_anjouan": {
         "title": "🎰 Anjouan Gaming License",
         "emoji": "🎰",
@@ -363,24 +366,27 @@ MAIN_MENU_TEXT = (
 )
 
 CATEGORIES = {
-    "crypto": {
-        "label": "₿  CRYPTO & MSB LICENSES",
-        "emoji": "₿",
-        "intro": (
-            "🔐 <b>CRYPTO &amp; MSB LICENSES</b>\n\n"
-            "We help crypto companies get regulated across the globe — from "
-            "the EU's MiCA framework to fast options in other jurisdictions.\n\n"
-            "Choose a service below:"
-        ),
-        "items": [
-            ("crypto_mica",        "🇪🇺 EU (MiCA)"),
-            ("crypto_swiss",       "🇨🇭 Switzerland (CASP)"),
-            ("crypto_canada",      "🇨🇦 Canada (MSB)"),
-            ("crypto_mauritius",   "🇲🇺 Mauritius (VASP)"),
-            ("crypto_elsalvador",  "🇸🇻 El Salvador (DASP)"),
-            ("crypto_alternative", "🌐 Alternative Crypto Setup"),
-        ],
-    },
+    # ── CRYPTO (закомментировано — раскомментировать когда нужно) ──
+    # "crypto": {
+    #     "label": "₿  CRYPTO & MSB LICENSES",
+    #     "emoji": "₿",
+    #     "intro": (
+    #         "🔐 <b>CRYPTO &amp; MSB LICENSES</b>\n\n"
+    #         "We help crypto companies get regulated across the globe — from "
+    #         "the EU's MiCA framework to fast options in other jurisdictions.\n\n"
+    #         "Choose a service below:"
+    #     ),
+    #     "items": [
+    #         ("crypto_mica",        "🇪🇺 EU (MiCA)"),
+    #         ("crypto_swiss",       "🇨🇭 Switzerland (CASP)"),
+    #         ("crypto_canada",      "🇨🇦 Canada (MSB)"),
+    #         ("crypto_mauritius",   "🇲🇺 Mauritius (VASP)"),
+    #         ("crypto_elsalvador",  "🇸🇻 El Salvador (DASP)"),
+    #         ("crypto_alternative", "🌐 Alternative Crypto Setup"),
+    #     ],
+    # },
+    # ── /CRYPTO ──────────────────────────────────────────────────────────────
+
     "gaming": {
         "label": "🎰 Gaming Licenses",
         "emoji": "🎰",
@@ -498,7 +504,7 @@ OTHER_SERVICES_TEXTS = {key: text for key, _, text in OTHER_SERVICES}
 
 def main_menu_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("₿  Crypto Licenses",   callback_data="cat_crypto")],
+        # [InlineKeyboardButton("₿  Crypto Licenses",   callback_data="cat_crypto")],  # закомментировано
         [InlineKeyboardButton("🎰 Gaming Licenses",    callback_data="cat_gaming")],
         [InlineKeyboardButton("📈 Forex Licenses",     callback_data="cat_forex")],
         [
@@ -558,7 +564,7 @@ def find_cat_for_license(lic_key: str) -> str:
         all_keys = [k for k, _ in cat["items"]]
         if lic_key in all_keys:
             return cat_key
-    return "crypto"
+    return "gaming"
 
 
 # ─── HANDLERS ────────────────────────────────────────────────────────────────
