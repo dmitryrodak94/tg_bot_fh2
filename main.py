@@ -122,7 +122,6 @@ def validate_message(text: str) -> str | None:
 # ─── DATA ────────────────────────────────────────────────────────────────────
 
 LICENSES = {
-    # ── CRYPTO (закомментировано — раскомментировать когда нужно) ──
     "crypto_mica": {
         "title": "🇪🇺 Crypto License in EU (CASP under MiCA)",
         "emoji": "🇪🇺",
@@ -215,9 +214,6 @@ LICENSES = {
             "needing a rapid, budget-friendly legal wrapper to launch globally."
         ),
     },
-    # ── /CRYPTO ──────────────────────────────────────────────────────────────
-
-    # ── GAMING (закомментировано — раскомментировать когда нужно) ──
     "gaming_anjouan": {
         "title": "🎰 Anjouan Gaming License",
         "emoji": "🎰",
@@ -306,9 +302,6 @@ LICENSES = {
             "✅ The industry standard for mid-size operators worldwide."
         ),
     },
-    # ── /GAMING ──────────────────────────────────────────────────────────────
-
-    # ── FOREX (закомментировано — раскомментировать когда нужно) ──
     "forex_mauritius": {
         "title": "🇲🇺 Forex License in Mauritius",
         "emoji": "🇲🇺",
@@ -356,7 +349,6 @@ LICENSES = {
             "cost-efficient regulated entity."
         ),
     },
-    # ── /FOREX ───────────────────────────────────────────────────────────────
 }
 
 # ─── MENUS ───────────────────────────────────────────────────────────────────
@@ -371,7 +363,6 @@ MAIN_MENU_TEXT = (
 )
 
 CATEGORIES = {
-    # ── CRYPTO (закомментировано — раскомментировать когда нужно) ──
     "crypto": {
         "label": "₿  CRYPTO & MSB LICENSES",
         "emoji": "₿",
@@ -390,9 +381,6 @@ CATEGORIES = {
             ("crypto_alternative", "🌐 Alternative Crypto Setup"),
         ],
     },
-    # ── /CRYPTO ──────────────────────────────────────────────────────────────
-
-    # ── GAMING (закомментировано — раскомментировать когда нужно) ──
     "gaming": {
         "label": "🎰 Gaming Licenses",
         "emoji": "🎰",
@@ -411,9 +399,6 @@ CATEGORIES = {
             ("gaming_anjouan",   "🎰 Anjouan Gaming License"),
         ],
     },
-    # ── /GAMING ──────────────────────────────────────────────────────────────
-
-    # ── FOREX (закомментировано — раскомментировать когда нужно) ──
     "forex": {
         "label": "📈 Forex Licenses",
         "emoji": "📈",
@@ -428,7 +413,6 @@ CATEGORIES = {
             ("forex_labuan",     "🇲🇾 Forex License in Labuan (Malaysia)"),
         ],
     },
-    # ── /FOREX ───────────────────────────────────────────────────────────────
 }
 
 # ─── OTHER SERVICES ──────────────────────────────────────────────────────────
@@ -514,9 +498,9 @@ OTHER_SERVICES_TEXTS = {key: text for key, _, text in OTHER_SERVICES}
 
 def main_menu_keyboard():
     return InlineKeyboardMarkup([
-        # [InlineKeyboardButton("₿  Crypto Licenses",   callback_data="cat_crypto")],  # закомментировано
-        # [InlineKeyboardButton("🎰 Gaming Licenses",    callback_data="cat_gaming")],  # закомментировано
-        # [InlineKeyboardButton("📈 Forex Licenses",     callback_data="cat_forex")],   # закомментировано
+        [InlineKeyboardButton("₿  Crypto Licenses",   callback_data="cat_crypto")],
+        [InlineKeyboardButton("🎰 Gaming Licenses",    callback_data="cat_gaming")],
+        [InlineKeyboardButton("📈 Forex Licenses",     callback_data="cat_forex")],
         [
             InlineKeyboardButton("📋 Other Services",  callback_data="other_list"),
             InlineKeyboardButton("📞 Contact Us",      callback_data="contact"),
@@ -574,7 +558,7 @@ def find_cat_for_license(lic_key: str) -> str:
         all_keys = [k for k, _ in cat["items"]]
         if lic_key in all_keys:
             return cat_key
-    return "gaming"
+    return "crypto"
 
 
 # ─── HANDLERS ────────────────────────────────────────────────────────────────
