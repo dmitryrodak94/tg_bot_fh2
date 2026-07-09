@@ -123,239 +123,239 @@ def validate_message(text: str) -> str | None:
 
 LICENSES = {
     # ── CRYPTO (закомментировано — раскомментировать когда нужно) ──
-    # "crypto_mica": {
-    #     "title": "🇪🇺 Crypto License in EU (CASP under MiCA)",
-    #     "emoji": "🇪🇺",
-    #     "description": (
-    #         "MiCA is the first EU-wide crypto regulation, "
-    #         "allowing your business to operate across all EU "
-    #         "member states with a single license.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Valid across all 27 EU member states\n"
-    #         "• Covers exchanges, custodians, issuers & advisors\n"
-    #         "• Fully enforced from December 2024\n"
-    #         "• Requires AML/KYC program, capital requirements & technical standards\n\n"
-    #         "⏱ <b>Timeline:</b> 4–6 months\n"
-    #         "✅ Best for companies targeting the European market with full regulatory compliance."
-    #     ),
-    # },
-    # "crypto_swiss": {
-    #     "title": "🇨🇭 Crypto License in Switzerland (CASP)",
-    #     "emoji": "🇨🇭",
-    #     "description": (
-    #         "License provides strong legal clarity for crypto, reliable banking access, "
-    #         "and high investor trust in a top-tier financial jurisdiction.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Mandatory SRO membership (e.g. VQF)\n"
-    #         "• Covers exchanges, wallets, DeFi & token issuers\n"
-    #         "• Switzerland is not an EU state — separate passport\n\n"
-    #         "⏱ <b>Timeline:</b> 5–6 months\n"
-    #         "✅ Ideal for companies wanting a premium European brand with Swiss credibility."
-    #     ),
-    # },
-    # "crypto_canada": {
-    #     "title": "🇨🇦 Crypto License in Canada (MSB)",
-    #     "emoji": "🇨🇦",
-    #     "description": (
-    #         "License provides strong regulatory credibility, "
-    #         "access to banking and payment systems, and enables crypto projects "
-    #         "to legally operate, process transactions, and build trusted global services.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Covers crypto exchanges & money transfer\n"
-    #         "• No minimum capital requirement\n"
-    #         "• Can be obtained 100% remotely\n\n"
-    #         "⏱ <b>Timeline:</b> 5–7 months\n"
-    #         "✅ Perfect for startups needing a regulated entity quickly and cost-effectively."
-    #     ),
-    # },
-    # "crypto_mauritius": {
-    #     "title": "🇲🇺 Crypto License in Mauritius (VASP)",
-    #     "emoji": "🇲🇺",
-    #     "description": (
-    #         "Fast licensing, low operational costs, flexible regulation, "
-    #         "and access to international markets.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Regulated by the FSC — FATF-compliant jurisdiction\n"
-    #         "• Covers exchanges, custodians, portfolio managers\n"
-    #         "• Tax-efficient jurisdiction (0–15% corporate tax)\n"
-    #         "• Growing fintech hub in Africa/Asia corridor\n\n"
-    #         "⏱ <b>Timeline:</b> 3–6 months\n"
-    #         "✅ Great for companies serving African and Asian markets."
-    #     ),
-    # },
-    # "crypto_elsalvador": {
-    #     "title": "🇸🇻 Crypto License in El Salvador (DASP)",
-    #     "emoji": "🇸🇻",
-    #     "description": (
-    #         "Legal recognition of crypto, fast setup, low taxes on crypto activities, "
-    #         "and a supportive regulatory environment.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Pioneer crypto-friendly jurisdiction\n"
-    #         "• Regulated by the Central Reserve Bank (BCR)\n"
-    #         "• Low tax environment, no capital gains tax on Bitcoin\n"
-    #         "• Covers exchanges, custodians & payment providers\n\n"
-    #         "⏱ <b>Timeline:</b> 3–4 months\n"
-    #         "✅ Excellent for innovative crypto businesses seeking a progressive jurisdiction."
-    #     ),
-    # },
-    # "crypto_alternative": {
-    #     "title": "🌐 Alternative Crypto Setup",
-    #     "emoji": "🌐",
-    #     "description": (
-    #         "This setup provides a fast, cost-effective, and highly flexible legal foundation "
-    #         "for your project, utilizing Legal Opinions instead of formal licensing to operate "
-    #         "compliantly in business-friendly jurisdictions.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• No formal VASP/CASP license required (Opinion-backed compliance)\n"
-    #         "• Low barrier to entry with minimal regulatory and reporting burdens\n"
-    #         "• Supported by professional Non-Security and Tokenomics Legal Opinions\n"
-    #         "• Tax-efficient corporate structures\n\n"
-    #         "⏱ <b>Timeline:</b> 3–4 weeks\n"
-    #         "✅ Ideal for: Web3 startups, DeFi protocols, DAOs, and utility token issuers "
-    #         "needing a rapid, budget-friendly legal wrapper to launch globally."
-    #     ),
-    # },
+    "crypto_mica": {
+        "title": "🇪🇺 Crypto License in EU (CASP under MiCA)",
+        "emoji": "🇪🇺",
+        "description": (
+            "MiCA is the first EU-wide crypto regulation, "
+            "allowing your business to operate across all EU "
+            "member states with a single license.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Valid across all 27 EU member states\n"
+            "• Covers exchanges, custodians, issuers & advisors\n"
+            "• Fully enforced from December 2024\n"
+            "• Requires AML/KYC program, capital requirements & technical standards\n\n"
+            "⏱ <b>Timeline:</b> 4–6 months\n"
+            "✅ Best for companies targeting the European market with full regulatory compliance."
+        ),
+    },
+    "crypto_swiss": {
+        "title": "🇨🇭 Crypto License in Switzerland (CASP)",
+        "emoji": "🇨🇭",
+        "description": (
+            "License provides strong legal clarity for crypto, reliable banking access, "
+            "and high investor trust in a top-tier financial jurisdiction.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Mandatory SRO membership (e.g. VQF)\n"
+            "• Covers exchanges, wallets, DeFi & token issuers\n"
+            "• Switzerland is not an EU state — separate passport\n\n"
+            "⏱ <b>Timeline:</b> 5–6 months\n"
+            "✅ Ideal for companies wanting a premium European brand with Swiss credibility."
+        ),
+    },
+    "crypto_canada": {
+        "title": "🇨🇦 Crypto License in Canada (MSB)",
+        "emoji": "🇨🇦",
+        "description": (
+            "License provides strong regulatory credibility, "
+            "access to banking and payment systems, and enables crypto projects "
+            "to legally operate, process transactions, and build trusted global services.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Covers crypto exchanges & money transfer\n"
+            "• No minimum capital requirement\n"
+            "• Can be obtained 100% remotely\n\n"
+            "⏱ <b>Timeline:</b> 5–7 months\n"
+            "✅ Perfect for startups needing a regulated entity quickly and cost-effectively."
+        ),
+    },
+    "crypto_mauritius": {
+        "title": "🇲🇺 Crypto License in Mauritius (VASP)",
+        "emoji": "🇲🇺",
+        "description": (
+            "Fast licensing, low operational costs, flexible regulation, "
+            "and access to international markets.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Regulated by the FSC — FATF-compliant jurisdiction\n"
+            "• Covers exchanges, custodians, portfolio managers\n"
+            "• Tax-efficient jurisdiction (0–15% corporate tax)\n"
+            "• Growing fintech hub in Africa/Asia corridor\n\n"
+            "⏱ <b>Timeline:</b> 3–6 months\n"
+            "✅ Great for companies serving African and Asian markets."
+        ),
+    },
+    "crypto_elsalvador": {
+        "title": "🇸🇻 Crypto License in El Salvador (DASP)",
+        "emoji": "🇸🇻",
+        "description": (
+            "Legal recognition of crypto, fast setup, low taxes on crypto activities, "
+            "and a supportive regulatory environment.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Pioneer crypto-friendly jurisdiction\n"
+            "• Regulated by the Central Reserve Bank (BCR)\n"
+            "• Low tax environment, no capital gains tax on Bitcoin\n"
+            "• Covers exchanges, custodians & payment providers\n\n"
+            "⏱ <b>Timeline:</b> 3–4 months\n"
+            "✅ Excellent for innovative crypto businesses seeking a progressive jurisdiction."
+        ),
+    },
+    "crypto_alternative": {
+        "title": "🌐 Alternative Crypto Setup",
+        "emoji": "🌐",
+        "description": (
+            "This setup provides a fast, cost-effective, and highly flexible legal foundation "
+            "for your project, utilizing Legal Opinions instead of formal licensing to operate "
+            "compliantly in business-friendly jurisdictions.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• No formal VASP/CASP license required (Opinion-backed compliance)\n"
+            "• Low barrier to entry with minimal regulatory and reporting burdens\n"
+            "• Supported by professional Non-Security and Tokenomics Legal Opinions\n"
+            "• Tax-efficient corporate structures\n\n"
+            "⏱ <b>Timeline:</b> 3–4 weeks\n"
+            "✅ Ideal for: Web3 startups, DeFi protocols, DAOs, and utility token issuers "
+            "needing a rapid, budget-friendly legal wrapper to launch globally."
+        ),
+    },
     # ── /CRYPTO ──────────────────────────────────────────────────────────────
 
     # ── GAMING (закомментировано — раскомментировать когда нужно) ──
-    # "gaming_anjouan": {
-    #     "title": "🎰 Anjouan Gaming License",
-    #     "emoji": "🎰",
-    #     "description": (
-    #         "No physical presence or local office requirement, "
-    #         "with broad acceptance by many PSPs, payment platforms, and processors.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Covers online casino, sports betting & poker\n"
-    #         "• Fast issuance, low government fees\n"
-    #         "• Competitive annual renewal costs\n\n"
-    #         "⏱ <b>Timeline:</b> 2–3 months\n"
-    #         "✅ Ideal for startups entering online gaming quickly."
-    #     ),
-    # },
-    # "gaming_tobique": {
-    #     "title": "🎲 Tobique Gaming License",
-    #     "emoji": "🎲",
-    #     "description": (
-    #         "A straightforward remote registration process, "
-    #         "no need for a physical office, and no requirement for local shareholders.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Canadian First Nation jurisdiction\n"
-    #         "• Excellent banking access — accepted by Visa/Mastercard\n"
-    #         "• Covers casino, sports betting, skill games\n"
-    #         "• Responsive regulator with reasonable compliance requirements\n\n"
-    #         "⏱ <b>Timeline:</b> 2–4 months\n"
-    #         "✅ Great for operators who need strong payment processing options."
-    #     ),
-    # },
-    # "gaming_nevis": {
-    #     "title": "🏝 Nevis Gaming License",
-    #     "emoji": "🏝",
-    #     "description": (
-    #         "Quick licensing procedure with 0% tax "
-    #         "on gross gaming revenue earned from other countries.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Caribbean jurisdiction with strong asset protection laws\n"
-    #         "• Low tax & no corporate tax on offshore income\n"
-    #         "• Covers casino, poker & sports betting\n"
-    #         "• Flexible company structure options\n\n"
-    #         "⏱ <b>Timeline:</b> 2–3 months\n"
-    #         "✅ Good for operators prioritizing privacy and asset protection."
-    #     ),
-    # },
-    # "gaming_kahnawake": {
-    #     "title": "🍁 Kahnawake Gaming License",
-    #     "emoji": "🍁",
-    #     "description": (
-    #         "A single license covering a wide range of activities "
-    #         "with a simplified licensing process.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Highly recognized by major payment processors\n"
-    #         "• Covers online casino, poker rooms & sports books\n"
-    #         "• Strict compliance requirements — adds legitimacy\n\n"
-    #         "⏱ <b>Timeline:</b> 3–4 months\n"
-    #         "✅ One of the most credible licenses for established operators."
-    #     ),
-    # },
-    # "gaming_costarica": {
-    #     "title": "🌴 Costa Rica Gaming License",
-    #     "emoji": "🌴",
-    #     "description": (
-    #         "Fast incorporation with no lengthy approval process, "
-    #         "local director, or physical office required.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• No formal gaming regulator — minimal compliance burden\n"
-    #         "• Very low operating costs\n"
-    #         "• Popular for crypto gambling & sportsbooks\n"
-    #         "• Not accepted by Visa/Mastercard for payment processing\n\n"
-    #         "⏱ <b>Timeline:</b> 2–4 weeks\n"
-    #         "✅ Best for crypto-first gambling operations on a tight budget."
-    #     ),
-    # },
-    # "gaming_curacao": {
-    #     "title": "🌊 Curaçao Gaming License",
-    #     "emoji": "🌊",
-    #     "description": (
-    #         "Widely recognized by players, partners, and payment providers, "
-    #         "with a quick and straightforward licensing process.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Newly reformed under the National Ordinance on Offshore Games of Hazard\n"
-    #         "• Covers casino, sports betting, lottery, poker\n"
-    #         "• Now requires full KYC/AML compliance program\n"
-    #         "• 2% gaming tax on gross gaming revenue\n\n"
-    #         "⏱ <b>Timeline:</b> 4–5 months\n"
-    #         "✅ The industry standard for mid-size operators worldwide."
-    #     ),
-    # },
+    "gaming_anjouan": {
+        "title": "🎰 Anjouan Gaming License",
+        "emoji": "🎰",
+        "description": (
+            "No physical presence or local office requirement, "
+            "with broad acceptance by many PSPs, payment platforms, and processors.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Covers online casino, sports betting & poker\n"
+            "• Fast issuance, low government fees\n"
+            "• Competitive annual renewal costs\n\n"
+            "⏱ <b>Timeline:</b> 2–3 months\n"
+            "✅ Ideal for startups entering online gaming quickly."
+        ),
+    },
+    "gaming_tobique": {
+        "title": "🎲 Tobique Gaming License",
+        "emoji": "🎲",
+        "description": (
+            "A straightforward remote registration process, "
+            "no need for a physical office, and no requirement for local shareholders.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Canadian First Nation jurisdiction\n"
+            "• Excellent banking access — accepted by Visa/Mastercard\n"
+            "• Covers casino, sports betting, skill games\n"
+            "• Responsive regulator with reasonable compliance requirements\n\n"
+            "⏱ <b>Timeline:</b> 2–4 months\n"
+            "✅ Great for operators who need strong payment processing options."
+        ),
+    },
+    "gaming_nevis": {
+        "title": "🏝 Nevis Gaming License",
+        "emoji": "🏝",
+        "description": (
+            "Quick licensing procedure with 0% tax "
+            "on gross gaming revenue earned from other countries.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Caribbean jurisdiction with strong asset protection laws\n"
+            "• Low tax & no corporate tax on offshore income\n"
+            "• Covers casino, poker & sports betting\n"
+            "• Flexible company structure options\n\n"
+            "⏱ <b>Timeline:</b> 2–3 months\n"
+            "✅ Good for operators prioritizing privacy and asset protection."
+        ),
+    },
+    "gaming_kahnawake": {
+        "title": "🍁 Kahnawake Gaming License",
+        "emoji": "🍁",
+        "description": (
+            "A single license covering a wide range of activities "
+            "with a simplified licensing process.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Highly recognized by major payment processors\n"
+            "• Covers online casino, poker rooms & sports books\n"
+            "• Strict compliance requirements — adds legitimacy\n\n"
+            "⏱ <b>Timeline:</b> 3–4 months\n"
+            "✅ One of the most credible licenses for established operators."
+        ),
+    },
+    "gaming_costarica": {
+        "title": "🌴 Costa Rica Gaming License",
+        "emoji": "🌴",
+        "description": (
+            "Fast incorporation with no lengthy approval process, "
+            "local director, or physical office required.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• No formal gaming regulator — minimal compliance burden\n"
+            "• Very low operating costs\n"
+            "• Popular for crypto gambling & sportsbooks\n"
+            "• Not accepted by Visa/Mastercard for payment processing\n\n"
+            "⏱ <b>Timeline:</b> 2–4 weeks\n"
+            "✅ Best for crypto-first gambling operations on a tight budget."
+        ),
+    },
+    "gaming_curacao": {
+        "title": "🌊 Curaçao Gaming License",
+        "emoji": "🌊",
+        "description": (
+            "Widely recognized by players, partners, and payment providers, "
+            "with a quick and straightforward licensing process.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Newly reformed under the National Ordinance on Offshore Games of Hazard\n"
+            "• Covers casino, sports betting, lottery, poker\n"
+            "• Now requires full KYC/AML compliance program\n"
+            "• 2% gaming tax on gross gaming revenue\n\n"
+            "⏱ <b>Timeline:</b> 4–5 months\n"
+            "✅ The industry standard for mid-size operators worldwide."
+        ),
+    },
     # ── /GAMING ──────────────────────────────────────────────────────────────
 
     # ── FOREX (закомментировано — раскомментировать когда нужно) ──
-    # "forex_mauritius": {
-    #     "title": "🇲🇺 Forex License in Mauritius",
-    #     "emoji": "🇲🇺",
-    #     "description": (
-    #         "Fast and cost-effective licensing with flexible requirements, "
-    #         "making it ideal for quickly launching and operating in global markets.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• FATF-compliant, IOSCO member\n"
-    #         "• Covers Forex, CFDs, equities & derivatives\n"
-    #         "• Excellent banking access and double tax treaties\n\n"
-    #         "⏱ <b>Timeline:</b> 3–4 months\n"
-    #         "✅ Premium Forex license with strong global recognition."
-    #     ),
-    # },
-    # "forex_seychelles": {
-    #     "title": "🏝 Forex License in Seychelles",
-    #     "emoji": "🏝",
-    #     "description": (
-    #         "A regulated and reputable jurisdiction with access "
-    #         "to banking and international infrastructure while maintaining reasonable costs.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Regulated by FSA Seychelles (IOSCO associate)\n"
-    #         "• Covers Forex, CFDs, crypto brokerage\n"
-    #         "• Very favorable tax regime (0% corporate tax offshore)\n\n"
-    #         "⏱ <b>Timeline:</b> 3–5 months\n"
-    #         "✅ The go-to license for new brokers — affordable, fast, globally accepted."
-    #     ),
-    # },
-    # "forex_labuan": {
-    #     "title": "🇲🇾 Forex License in Labuan, Malaysia (Money Broking)",
-    #     "emoji": "🇲🇾",
-    #     "description": (
-    #         "Labuan FSA offers a Money Broking License in a well-regulated "
-    #         "Asian financial hub with strong international credibility and "
-    #         "access to Asian banking infrastructure.\n\n"
-    #         "📌 <b>Key facts:</b>\n"
-    #         "• Regulated by Labuan FSA — FATF-compliant, IOSCO member\n"
-    #         "• Covers Forex, CFDs, money broking & financial advisory\n"
-    #         "• Low corporate tax: 3% on net profit (or flat RM 20,000/year)\n"
-    #         "• Access to Malaysia's extensive double tax treaty network (70+ countries)\n"
-    #         "• Strong banking access — local and international banks\n"
-    #         "• 100% foreign ownership permitted\n\n"
-    #         "⏱ <b>Timeline:</b> 3–6 months\n"
-    #         "✅ Ideal for brokers targeting Asian markets who need a reputable, "
-    #         "cost-efficient regulated entity."
-    #     ),
-    # },
+    "forex_mauritius": {
+        "title": "🇲🇺 Forex License in Mauritius",
+        "emoji": "🇲🇺",
+        "description": (
+            "Fast and cost-effective licensing with flexible requirements, "
+            "making it ideal for quickly launching and operating in global markets.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• FATF-compliant, IOSCO member\n"
+            "• Covers Forex, CFDs, equities & derivatives\n"
+            "• Excellent banking access and double tax treaties\n\n"
+            "⏱ <b>Timeline:</b> 3–4 months\n"
+            "✅ Premium Forex license with strong global recognition."
+        ),
+    },
+    "forex_seychelles": {
+        "title": "🏝 Forex License in Seychelles",
+        "emoji": "🏝",
+        "description": (
+            "A regulated and reputable jurisdiction with access "
+            "to banking and international infrastructure while maintaining reasonable costs.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Regulated by FSA Seychelles (IOSCO associate)\n"
+            "• Covers Forex, CFDs, crypto brokerage\n"
+            "• Very favorable tax regime (0% corporate tax offshore)\n\n"
+            "⏱ <b>Timeline:</b> 3–5 months\n"
+            "✅ The go-to license for new brokers — affordable, fast, globally accepted."
+        ),
+    },
+    "forex_labuan": {
+        "title": "🇲🇾 Forex License in Labuan, Malaysia (Money Broking)",
+        "emoji": "🇲🇾",
+        "description": (
+            "Labuan FSA offers a Money Broking License in a well-regulated "
+            "Asian financial hub with strong international credibility and "
+            "access to Asian banking infrastructure.\n\n"
+            "📌 <b>Key facts:</b>\n"
+            "• Regulated by Labuan FSA — FATF-compliant, IOSCO member\n"
+            "• Covers Forex, CFDs, money broking & financial advisory\n"
+            "• Low corporate tax: 3% on net profit (or flat RM 20,000/year)\n"
+            "• Access to Malaysia's extensive double tax treaty network (70+ countries)\n"
+            "• Strong banking access — local and international banks\n"
+            "• 100% foreign ownership permitted\n\n"
+            "⏱ <b>Timeline:</b> 3–6 months\n"
+            "✅ Ideal for brokers targeting Asian markets who need a reputable, "
+            "cost-efficient regulated entity."
+        ),
+    },
     # ── /FOREX ───────────────────────────────────────────────────────────────
 }
 
@@ -372,62 +372,62 @@ MAIN_MENU_TEXT = (
 
 CATEGORIES = {
     # ── CRYPTO (закомментировано — раскомментировать когда нужно) ──
-    # "crypto": {
-    #     "label": "₿  CRYPTO & MSB LICENSES",
-    #     "emoji": "₿",
-    #     "intro": (
-    #         "🔐 <b>CRYPTO &amp; MSB LICENSES</b>\n\n"
-    #         "We help crypto companies get regulated across the globe — from "
-    #         "the EU's MiCA framework to fast options in other jurisdictions.\n\n"
-    #         "Choose a service below:"
-    #     ),
-    #     "items": [
-    #         ("crypto_mica",        "🇪🇺 EU (MiCA)"),
-    #         ("crypto_swiss",       "🇨🇭 Switzerland (CASP)"),
-    #         ("crypto_canada",      "🇨🇦 Canada (MSB)"),
-    #         ("crypto_mauritius",   "🇲🇺 Mauritius (VASP)"),
-    #         ("crypto_elsalvador",  "🇸🇻 El Salvador (DASP)"),
-    #         ("crypto_alternative", "🌐 Alternative Crypto Setup"),
-    #     ],
-    # },
+    "crypto": {
+        "label": "₿  CRYPTO & MSB LICENSES",
+        "emoji": "₿",
+        "intro": (
+            "🔐 <b>CRYPTO &amp; MSB LICENSES</b>\n\n"
+            "We help crypto companies get regulated across the globe — from "
+            "the EU's MiCA framework to fast options in other jurisdictions.\n\n"
+            "Choose a service below:"
+        ),
+        "items": [
+            ("crypto_mica",        "🇪🇺 EU (MiCA)"),
+            ("crypto_swiss",       "🇨🇭 Switzerland (CASP)"),
+            ("crypto_canada",      "🇨🇦 Canada (MSB)"),
+            ("crypto_mauritius",   "🇲🇺 Mauritius (VASP)"),
+            ("crypto_elsalvador",  "🇸🇻 El Salvador (DASP)"),
+            ("crypto_alternative", "🌐 Alternative Crypto Setup"),
+        ],
+    },
     # ── /CRYPTO ──────────────────────────────────────────────────────────────
 
     # ── GAMING (закомментировано — раскомментировать когда нужно) ──
-    # "gaming": {
-    #     "label": "🎰 Gaming Licenses",
-    #     "emoji": "🎰",
-    #     "intro": (
-    #         "🎮 <b>Gaming Licenses</b>\n\n"
-    #         "We cover the full spectrum of iGaming jurisdictions — from "
-    #         "budget-friendly options to premium regulated markets.\n\n"
-    #         "Choose a service below:"
-    #     ),
-    #     "items": [
-    #         ("gaming_curacao",   "🌊 Curaçao Gaming License"),
-    #         ("gaming_tobique",   "🎲 Tobique Gaming License"),
-    #         ("gaming_nevis",     "🏝 Nevis Gaming License"),
-    #         ("gaming_kahnawake", "🍁 Kahnawake Gaming License"),
-    #         ("gaming_costarica", "🌴 Costa Rica Gaming License"),
-    #         ("gaming_anjouan",   "🎰 Anjouan Gaming License"),
-    #     ],
-    # },
+    "gaming": {
+        "label": "🎰 Gaming Licenses",
+        "emoji": "🎰",
+        "intro": (
+            "🎮 <b>Gaming Licenses</b>\n\n"
+            "We cover the full spectrum of iGaming jurisdictions — from "
+            "budget-friendly options to premium regulated markets.\n\n"
+            "Choose a service below:"
+        ),
+        "items": [
+            ("gaming_curacao",   "🌊 Curaçao Gaming License"),
+            ("gaming_tobique",   "🎲 Tobique Gaming License"),
+            ("gaming_nevis",     "🏝 Nevis Gaming License"),
+            ("gaming_kahnawake", "🍁 Kahnawake Gaming License"),
+            ("gaming_costarica", "🌴 Costa Rica Gaming License"),
+            ("gaming_anjouan",   "🎰 Anjouan Gaming License"),
+        ],
+    },
     # ── /GAMING ──────────────────────────────────────────────────────────────
 
     # ── FOREX (закомментировано — раскомментировать когда нужно) ──
-    # "forex": {
-    #     "label": "📈 Forex Licenses",
-    #     "emoji": "📈",
-    #     "intro": (
-    #         "📊 <b>Forex &amp; Brokerage Licenses</b>\n\n"
-    #         "We help Forex brokers and financial companies get properly regulated.\n\n"
-    #         "Choose a jurisdiction or service:"
-    #     ),
-    #     "items": [
-    #         ("forex_mauritius",  "🇲🇺 Forex License in Mauritius"),
-    #         ("forex_seychelles", "🏝 Forex License in Seychelles"),
-    #         ("forex_labuan",     "🇲🇾 Forex License in Labuan (Malaysia)"),
-    #     ],
-    # },
+    "forex": {
+        "label": "📈 Forex Licenses",
+        "emoji": "📈",
+        "intro": (
+            "📊 <b>Forex &amp; Brokerage Licenses</b>\n\n"
+            "We help Forex brokers and financial companies get properly regulated.\n\n"
+            "Choose a jurisdiction or service:"
+        ),
+        "items": [
+            ("forex_mauritius",  "🇲🇺 Forex License in Mauritius"),
+            ("forex_seychelles", "🏝 Forex License in Seychelles"),
+            ("forex_labuan",     "🇲🇾 Forex License in Labuan (Malaysia)"),
+        ],
+    },
     # ── /FOREX ───────────────────────────────────────────────────────────────
 }
 
