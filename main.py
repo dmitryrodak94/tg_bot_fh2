@@ -100,7 +100,7 @@ def validate_phone(text: str) -> str | None:
         return "❗ This doesn't look like a real phone number. Please enter your actual number."
     if not PHONE_RE.match(text):
         return (
-            "❗ Invalid format. Use digits, spaces, dashes or parentheses "
+            "❗ Invalid format Use digits, spaces, dashes or parentheses "
             "(e.g. +44 20 7946 0958 or @username)."
         )
     normalized = digits[2:] if digits.startswith("00") else digits
